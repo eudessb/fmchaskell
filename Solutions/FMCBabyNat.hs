@@ -34,11 +34,14 @@ infixl 6 +
 
 -- Output: O means False, S O means True
 isZero :: Nat -> Nat
-isZero = undefined
+isZero O = O
+isZero n = n
 
 -- pred is the predecessor but we define zero's to be zero
+-- Feito
 pred :: Nat -> Nat
-pred = undefined
+pred O = O
+pred n =  n -* S(O) 
 
 -- Output: O means False, S O means True
 even :: Nat -> Nat
@@ -52,10 +55,13 @@ odd = undefined
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 monus :: Nat -> Nat -> Nat
-monus = undefined
+monus = (-*) -- Não sei se tenho que fazer essa atribuição aqui ainda
 
+-- Feito ?
 (-*) :: Nat -> Nat -> Nat
-(-*) = monus
+n -* O = n
+O -* _ = O
+S n -* S m = n -* m  
 
 -- multiplication
 (*) :: Nat -> Nat -> Nat
