@@ -1,7 +1,7 @@
 module FMCBabyNat where
 
 -- Do not alter this import!
-import Prelude ( Show(..) , Eq(..) , undefined )
+import Prelude (Eq (..), Show (..), undefined)
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -13,23 +13,23 @@ data Nat = O | S Nat
 
 -- some sugar
 zero, one, two, three, four, five, six, seven, eight :: Nat
-zero  = O
-one   = S zero
-two   = S one
+zero = O
+one = S zero
+two = S one
 three = S two
-four  = S three
-five  = S four
-six   = S five
+four = S three
+five = S four
+six = S five
 seven = S six
 eight = S seven
 
 -- addition
 (+) :: Nat -> Nat -> Nat
-n + O   = n
+n + O = n
 n + S m = S (n + m)
 
- -- syntactic associativity: L
- -- syntactic precedence: 6
+-- syntactic associativity: L
+-- syntactic precedence: 6
 infixl 6 +
 
 -- Output: O means False, S O means True
@@ -41,7 +41,7 @@ isZero n = n
 -- Feito
 pred :: Nat -> Nat
 pred O = O
-pred n =  n -* S(O) 
+pred n = n -* S O
 
 -- Output: O means False, S O means True
 even :: Nat -> Nat
@@ -50,22 +50,23 @@ even = undefined
 odd :: Nat -> Nat
 odd = undefined
 
--- This is called the dotminus or monus operator
+-- This is called the dotminus or monus ope>rator
 -- (also: proper subtraction, arithmetic subtraction, ...).
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 monus :: Nat -> Nat -> Nat
-monus = (-*) -- Não sei se tenho que fazer essa atribuição aqui ainda
+monus = (-*)
 
 -- Feito ?
 (-*) :: Nat -> Nat -> Nat
 n -* O = n
 O -* _ = O
-S n -* S m = n -* m  
+S n -* S m = n -* m
 
 -- multiplication
 (*) :: Nat -> Nat -> Nat
-(*) = undefined
+n * O = O
+n * m = n + (n * (m -* one))
 
 infixl 7 *
 
@@ -77,7 +78,11 @@ infixl 7 *
 
 -- quotient
 (/) :: Nat -> Nat -> Nat
-(/) = undefined
+n / O = undefined
+n / one = n
+
+-- n/m case m of
+-- n * m  = x ->
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
@@ -108,4 +113,3 @@ sg = undefined
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
 lo = undefined
-
