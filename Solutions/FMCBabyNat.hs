@@ -64,9 +64,10 @@ O -* _ = O
 S n -* S m = n -* m
 
 -- multiplication
+-- Nova abordagem sem o uso de -*
 (*) :: Nat -> Nat -> Nat
 n * O = O
-n * m = n + (n * (m -* one))
+n * S m = n + (n * m)
 
 infixl 7 *
 
