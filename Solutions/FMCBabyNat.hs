@@ -105,7 +105,7 @@ n % m = n -* (m * (n / m))
 (|||) :: Nat -> Nat -> Nat
 (|||) O _ = S O
 (|||) _ O = O
-(|||) n m = case n % m of
+(|||) n m = case m % n of
   O -> S O
   _ -> O
 
