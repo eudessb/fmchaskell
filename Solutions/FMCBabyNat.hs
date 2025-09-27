@@ -45,10 +45,15 @@ pred n = n -* S O
 
 -- Output: O means False, S O means True
 even :: Nat -> Nat
-even = undefined
+even O = S O
+even (S O) = O
+even (S (S n)) = even n
 
 odd :: Nat -> Nat
-odd = undefined
+odd O = O
+odd n = case even n of
+  O -> S O
+  S O -> O
 
 -- This is called the dotminus or monus ope>rator
 -- (also: proper subtraction, arithmetic subtraction, ...).
@@ -73,17 +78,20 @@ infixl 7 *
 
 -- exponentiation
 (^) :: Nat -> Nat -> Nat
-(^) = undefined
+m ^ O = S O
+n ^ S m = n ^ m * n
 
--- decide: infix? ? ^
+infix 8 ^
 
 -- quotient
 (/) :: Nat -> Nat -> Nat
-n / O = undefined
-n / one = n
-
--- n/m case m of
--- n * m  = x ->
+_ / O = undefined
+O / _ = O
+n / m = case n -* m of
+  O -> case m -* n of
+    O -> S O
+    _ -> O
+  n -> S (n / m)
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
@@ -104,8 +112,10 @@ absDiff = undefined
 (|-|) :: Nat -> Nat -> Nat
 (|-|) = absDiff
 
+-- Com -*
 factorial :: Nat -> Nat
-factorial = undefined
+factorial O = S O
+factorial n = n * factorial (n -* one)
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
