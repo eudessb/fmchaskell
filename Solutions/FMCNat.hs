@@ -6,6 +6,8 @@
 module Solutions.FMCNat where
 
 -- Do not alter this import!
+
+import Distribution.Compat.Lens (_1)
 import Prelude
   ( Bool (..),
     Eq (..),
@@ -44,18 +46,26 @@ instance Show Nat where
   show (S n) = "S" ++ show n
 
 instance Eq Nat where
-  (==) = undefined
+  (==) n m = case n - m of
+    O -> True
+    _ -> False
 
 instance Ord Nat where
-  (<=) = undefined
+  (<=) O _ = True
+  (<=) (S _) O = False
+  (<=) (S n) (S m) = n <= m
 
   -- Ord does not REQUIRE defining min and max.
   -- Howevener, you should define them WITHOUT using (<=).
   -- Both are binary functions: max m n = ..., etc.
 
-  min = undefined
+  min n m = case isZero (n -* m) of
+    True -> n
+    False -> m
 
-  max = undefined
+  max n m = case isZero (n -* m) of
+    True -> m
+    False -> n
 
 ----------------------------------------------------------------
 -- some sugar
@@ -115,7 +125,7 @@ monus = (-*)
 (-*) :: Nat -> Nat -> Nat
 n -* O = n
 O -* _ = O
-S n -* S m = n -* m
+S n -* S m = n - m
 
 -- multiplication
 times :: Nat -> Nat -> Nat
@@ -138,7 +148,13 @@ exp = undefined
 
 -- quotient
 (</>) :: Nat -> Nat -> Nat
-(</>) = undefined
+(</>) n O = error "Não é possível dividir por O"
+(</>) O n = O
+(</>) n m = case n -* m of
+  O -> case m -* n of
+    O -> S O
+    _ -> O
+  n -> S ((</>) n m)
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
@@ -158,12 +174,14 @@ divides = (<|>)
 -- x `dist` y = |x - y|
 -- (Careful here: this - is the real minus operator!)
 dist :: Nat -> Nat -> Nat
-dist = undefined
+dist n O = n
+dist n m = n - m
 
 (|-|) = dist
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial O = S O
+factorial n = n * factorial (n - one)
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
