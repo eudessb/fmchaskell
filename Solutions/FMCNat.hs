@@ -196,6 +196,6 @@ instance Num Nat where
   signum :: Nat -> Nat
   signum = sg
   fromInteger x
-    | x < 0 = error "Negativos não são supotados"
+    | x < 0 = error "Negativos não são suportados"
     | x == 0 = O
     | otherwise = S (fromInteger (x - 1))
