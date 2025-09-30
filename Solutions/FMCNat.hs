@@ -1,6 +1,9 @@
 {-# LANGUAGE GADTs #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
-module ExNat where
+{-# HLINT ignore "Use if" #-}
+
+module Solutions.FMCNat where
 
 -- Do not alter this import!
 import Prelude
@@ -10,6 +13,7 @@ import Prelude
     Num (..),
     Ord (..),
     Show (..),
+    String,
     error,
     not,
     otherwise,
@@ -36,7 +40,8 @@ data Nat where
 instance Show Nat where
   -- zero  should be shown as O
   -- three should be shown as SSSO
-  show = undefined
+  show O = "O"
+  show (S n) = "S" ++ show n
 
 instance Eq Nat where
   (==) = undefined
@@ -73,17 +78,23 @@ eight = S seven
 
 isZero :: Nat -> Bool
 isZero O = True
-isZero n = False
+isZero _ = False
 
 -- pred is the predecessor but we define zero's to be zero
 pred :: Nat -> Nat
-pred = undefined
+pred O = O
+pred n = n -* S O
 
 even :: Nat -> Bool
-even = undefined
+even O = True
+even (S O) = False
+even (S (S n)) = even n
 
 odd :: Nat -> Bool
-odd = undefined
+odd O = False
+odd n = case even n of
+  True -> False
+  False -> True
 
 ----------------------------------------------------------------
 -- operations
@@ -91,28 +102,33 @@ odd = undefined
 
 -- addition
 (<+>) :: Nat -> Nat -> Nat
-(<+>) = undefined
+n <+> O = n
+n <+> S m = S (n <+> m)
 
 -- This is called the dotminus or monus operator
 -- (also: proper subtraction, arithmetic subtraction, ...).
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 monus :: Nat -> Nat -> Nat
-monus = undefined
+monus = (-*)
 
 (-*) :: Nat -> Nat -> Nat
-(-*) = undefined
+n -* O = n
+O -* _ = O
+S n -* S m = n -* m
 
 -- multiplication
 times :: Nat -> Nat -> Nat
-times = undefined
+times _ O = O
+times n (S m) = n + times n m
 
 (<*>) :: Nat -> Nat -> Nat
 (<*>) = times
 
 -- power / exponentiation
 pow :: Nat -> Nat -> Nat
-pow = undefined
+pow _ O = one
+pow n (S m) = n * pow n m
 
 exp :: Nat -> Nat -> Nat
 exp = undefined
@@ -151,7 +167,8 @@ factorial = undefined
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg O = zero
+sg n = one
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
@@ -174,10 +191,11 @@ fromNat = undefined
 instance Num Nat where
   (+) = (<+>)
   (*) = (<*>)
-  (-) = (<->)
+  (-) = monus
   abs n = n
+  signum :: Nat -> Nat
   signum = sg
   fromInteger x
-    | x < 0 = undefined
-    | x == 0 = undefined
-    | otherwise = undefined
+    | x < 0 = error "Negativos não são supotados"
+    | x == 0 = O
+    | otherwise = S (fromInteger (x - 1))
