@@ -1,22 +1,24 @@
 module ExBool where
 
 -- Do not alter this import!
+
+import GHC.Base qualified
 import Prelude
-    ( Show(..)
-    , Eq(..)
-    , Ord(..)
-    , Num(..)
-    , Enum(..)
-    , Integral(..)
-    , Int
-    , Char
-    , (++)
-    , ($)
-    , (.)
-    , undefined
-    , error
-    , otherwise
-    )
+  ( Char,
+    Enum (..),
+    Eq (..),
+    Int,
+    Integral (..),
+    Num (..),
+    Ord (..),
+    Show (..),
+    error,
+    otherwise,
+    undefined,
+    ($),
+    (++),
+    (.),
+  )
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -25,36 +27,42 @@ import Prelude
 data Bool = False | True
 
 instance Show Bool where
-
-    show = undefined
+  show :: Bool -> GHC.Base.String
+  show True = "True"
+  show False = "False"
 
 instance Enum Bool where
+  toEnum 0 = False
+  toEnum 1 = True
+  toEnum _ = error "toEnum: valor inválido, deve ser 0 ou 1!!"
 
-    toEnum  = undefined
-
-    fromEnum  = undefined
+  fromEnum :: Bool -> Int
+  fromEnum False = 0
+  fromEnum True = 1
 
 -- conjunction (AND)
 (&&) :: Bool -> Bool -> Bool
-(&&) = undefined
+False && _ = False
+True && b = b
 
 infixr 3 &&
 
 -- disjunction (OR)
 (||) :: Bool -> Bool -> Bool
-(||) = undefined
+(||) True _ = True
+(||) False _ = False
 
 infixr 2 ||
 
 -- NAND (Sheffer stroke)
 (/|\) :: Bool -> Bool -> Bool
-(/|\) = undefined
+(/|\) p q = not (p && q)
 
 infixr 2 /|\
 
 -- NOR (aka: Peirce arrow or Quine dagger)
 (\|/) :: Bool -> Bool -> Bool
-(\|/) = undefined
+(\|/) p q = not (p || q)
 
 infixr 2 \|/
 
@@ -66,28 +74,28 @@ infixr 2 <=/=>
 
 -- boolean negation
 not :: Bool -> Bool
-not = undefined
+not True = False
+not False = True
 
 -- if-then-else expression
 ifThenElse :: Bool -> a -> a -> a
-ifThenElse = undefined
+ifThenElse True thenValue elseValue = thenValue
+ifThenElse False thenValue elseValue = elseValue
 
 -- logical "implies"
 (==>) :: Bool -> Bool -> Bool
-(==>) = undefined
+p ==> q = not p || q
 
 infixr 1 ==>
 
 -- logical "implied by"
 (<==) :: Bool -> Bool -> Bool
-(<==) = undefined
+p <== q = q ==> p
 
 infixl 1 <==
 
 -- logical equivalence
 (<=>) :: Bool -> Bool -> Bool
-(<=>) = undefined
+(<=>) p q = (p <== q) && (p ==> q)
 
 infixr 1 <=>
-
-
