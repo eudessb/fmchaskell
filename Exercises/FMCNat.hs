@@ -4,19 +4,22 @@ module ExNat where
 
 -- Do not alter this import!
 import Prelude
-    ( Show(..)
-    , Eq(..)
-    , Ord(..)
-    , Num(..)
-    , Integral(..)
-    , Bool(..) , not , (&&) , (||)
-    , ($)
-    , (.)
-    , (++)
-    , undefined
-    , error
-    , otherwise
-    )
+  ( Bool (..),
+    Eq (..),
+    Integral (..),
+    Num (..),
+    Ord (..),
+    Show (..),
+    error,
+    not,
+    otherwise,
+    undefined,
+    ($),
+    (&&),
+    (++),
+    (.),
+    (||),
+  )
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -31,40 +34,36 @@ data Nat where
 ----------------------------------------------------------------
 
 instance Show Nat where
-
-    -- zero  should be shown as O
-    -- three should be shown as SSSO
-    show = undefined
+  -- zero  should be shown as O
+  -- three should be shown as SSSO
+  show = undefined
 
 instance Eq Nat where
-
-    (==) = undefined
+  (==) = undefined
 
 instance Ord Nat where
+  (<=) = undefined
 
-    (<=) = undefined
+  -- Ord does not REQUIRE defining min and max.
+  -- Howevener, you should define them WITHOUT using (<=).
+  -- Both are binary functions: max m n = ..., etc.
 
-    -- Ord does not REQUIRE defining min and max.
-    -- Howevener, you should define them WITHOUT using (<=).
-    -- Both are binary functions: max m n = ..., etc.
+  min = undefined
 
-    min = undefined
-
-    max = undefined
-
+  max = undefined
 
 ----------------------------------------------------------------
 -- some sugar
 ----------------------------------------------------------------
 
 zero, one, two, three, four, five, six, seven, eight :: Nat
-zero  = O
-one   = S zero
-two   = S one
+zero = O
+one = S zero
+two = S one
 three = S two
-four  = S three
-five  = S four
-six   = S five
+four = S three
+five = S four
+six = S five
 seven = S six
 eight = S seven
 
@@ -84,7 +83,6 @@ even = undefined
 
 odd :: Nat -> Bool
 odd = undefined
-
 
 ----------------------------------------------------------------
 -- operations
@@ -139,7 +137,6 @@ eucdiv = undefined
 
 divides = (<|>)
 
-
 -- distance between nats
 -- x `dist` y = |x - y|
 -- (Careful here: this - is the real minus operator!)
@@ -159,7 +156,6 @@ sg = undefined
 lo :: Nat -> Nat -> Nat
 lo = undefined
 
-
 ----------------------------------------------------------------
 -- Num & Integral fun
 ----------------------------------------------------------------
@@ -167,23 +163,20 @@ lo = undefined
 -- For the following functions we need Num(..).
 -- Do NOT use the following functions in the definitions above!
 
-toNat :: Integral a => a -> Nat
+toNat :: (Integral a) => a -> Nat
 toNat = undefined
 
-fromNat :: Integral a => Nat -> a
+fromNat :: (Integral a) => Nat -> a
 fromNat = undefined
-
 
 -- Voilá: we can now easily make Nat an instance of Num.
 instance Num Nat where
-
-    (+) = (<+>)
-    (*) = (<*>)
-    (-) = (<->)
-    abs n = n
-    signum = sg
-    fromInteger x
-      | x < 0     = undefined
-      | x == 0    = undefined
-      | otherwise = undefined
-
+  (+) = (<+>)
+  (*) = (<*>)
+  (-) = (<->)
+  abs n = n
+  signum = sg
+  fromInteger x
+    | x < 0 = undefined
+    | x == 0 = undefined
+    | otherwise = undefined
