@@ -118,18 +118,39 @@ xs +++ (y : ys) = (xs +++ [y]) +++ ys
 -- (hmm?!)
 infixl 5 +++
 
--- minimum :: Ord a => [a] -> a
--- maximum :: Ord a => [a] -> a
+-- minimum
+minimum :: (Ord a) => [a] -> a
+minimum [x] = x
+minimum (x : x' : xs) = minimum ((if x <= x' then x else x') : xs)
+
+-- maximum
+maximum :: (Ord a) => [a] -> a
+maximum [x] = x
+maximum (x : x' : xs) = maximum ((if x >= x' then x else x') : xs)
 
 -- take
--- drop
+take :: Int -> [a] -> [a]
+take 0 _ = []
+take _ [] = []
+take n (x : xs) = x : take (n - 1) xs
 
--- takeWhile
+-- drop
+drop :: Int -> [a] -> [a]
+drop 0 xs = xs
+drop _ [] = []
+drop n (_ : xs) = drop (n - 1) xs
+
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile _ [] = []
+takeWhile c (x : xs) = if c x then x : takeWhile c xs else []
+
 -- dropWhile
 
 -- tails
 -- init
--- inits
+init :: [a] -> [a]
+init [_] = []
+init (x : xs) = x : init xs -- inits
 
 -- subsequences
 
@@ -151,7 +172,10 @@ infixl 5 +++
 -- filter
 -- map
 
--- cycle
+cycle :: [a] -> [a]
+cycle [] = error "a lista que você quer usar 'cycle' está vazia"
+cycle xs = cycle xs
+
 -- repeat
 -- replicate
 
