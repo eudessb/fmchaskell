@@ -167,7 +167,6 @@ inits [] = []
 inits xs = init xs : inits (init xs)
 
 -- subsequences
--- subsequences ::
 subsequences :: [a] -> [[a]]
 subsequences [] = [[]]
 subsequences (x : xs) = subsequences xs ++ map (x :) (subsequences xs)
