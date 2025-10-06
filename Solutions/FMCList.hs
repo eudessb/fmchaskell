@@ -95,7 +95,8 @@ reverse :: [a] -> [a]
 reverse = undefined
 
 (++) :: [a] -> [a] -> [a]
-(++) = undefined
+(++) [] ys = ys
+(++) (x : xs) ys = x : (xs ++ ys)
 
 -- right-associative for performance!
 -- (what?!)
@@ -140,20 +141,33 @@ drop 0 xs = xs
 drop _ [] = []
 drop n (_ : xs) = drop (n - 1) xs
 
+-- takeWhile
 takeWhile :: (a -> Bool) -> [a] -> [a]
 takeWhile _ [] = []
 takeWhile c (x : xs) = if c x then x : takeWhile c xs else []
 
--- dropWhile
+-- dropwhile
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile _ [] = []
+dropWhile c (x : xs) = if c x then dropWhile c xs else x : xs
 
 -- tails
+tails :: [a] -> [[a]]
+tails [] = []
+tails (x : xs) = xs : tails xs
+
 -- init
 init :: [a] -> [a]
 init [_] = []
-init (x : xs) = x : init xs -- inits
+init (x : xs) = x : init xs
+
+-- inits
+inits :: [a] -> [[a]]
+inits [] = []
+inits xs = init xs : inits (init xs)
 
 -- subsequences
-
+-- subsequences :: [a] -> [[a]]
 -- any
 -- all
 
@@ -161,6 +175,9 @@ init (x : xs) = x : init xs -- inits
 -- or
 
 -- concat
+concat :: [[a]] -> [a]
+concat [] = []
+concat (xs : xss) = xs ++ concat xss
 
 -- elem using the funciton 'any' above
 
