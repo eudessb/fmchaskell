@@ -167,12 +167,28 @@ inits [] = []
 inits xs = init xs : inits (init xs)
 
 -- subsequences
--- subsequences :: [a] -> [[a]]
--- any
--- all
+-- subsequences ::
+subsequences :: [a] -> [[a]]
+subsequences [] = [[]]
+subsequences (x : xs) = subsequences xs ++ map (x :) (subsequences xs)
 
--- and
+any :: (a -> Bool) -> [a] -> Bool
+any _ [] = False
+any c (x : xs) = c x || any c xs
+
+-- all
+all :: (a -> Bool) -> [a] -> Bool
+all _ [] = True
+all c (x : xs) = c x && all c xs
+
+and :: [Bool] -> Bool
+and [] = True
+and (x : xs) = x && and xs
+
 -- or
+or :: [Bool] -> Bool
+or [] = False
+or (x : xs) = x || or xs
 
 -- concat
 concat :: [[a]] -> [a]
@@ -187,8 +203,13 @@ concat (xs : xss) = xs ++ concat xss
 -- (!!)
 
 -- filter
--- map
 
+-- map
+map :: (a -> b) -> [a] -> [b]
+map _ [] = []
+map f (x : xs) = f x : map f xs
+
+-- cycle
 cycle :: [a] -> [a]
 cycle [] = error "a lista que você quer usar 'cycle' está vazia"
 cycle xs = cycle xs
